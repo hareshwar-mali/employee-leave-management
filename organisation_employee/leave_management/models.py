@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-class Employee(models.Model):
+class EmployeeProfile(models.Model):
     ACTIVE = 'Active'
     INACTIVE = 'Inactive'
 
@@ -23,7 +23,7 @@ class Employee(models.Model):
         return f'{self.first_name} {self.last_name}'
 
 
-class Leave(models.Model):
+class EmployeeLeave(models.Model):
     SICK_CASUAL = 'CS'
     EARNED = 'E'
 
@@ -32,7 +32,7 @@ class Leave(models.Model):
         (EARNED, 'Earned Leave'),
     ]
 
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE)
     leave_type = models.CharField(max_length=2, choices=LEAVE_TYPE_CHOICES)
     start_date = models.DateField()
     end_date = models.DateField()
