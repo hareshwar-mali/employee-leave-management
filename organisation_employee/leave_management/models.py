@@ -10,7 +10,7 @@ class EmployeeProfile(models.Model):
         (ACTIVE, 'Active'),
         (INACTIVE, 'Inactive'),
     ]
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=10, unique=True)
