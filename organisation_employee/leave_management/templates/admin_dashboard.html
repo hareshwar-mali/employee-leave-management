@@ -1,0 +1,127 @@
+<div class="table-container">
+    <h2>Employee List</h2>
+    <a href="{% url 'modify_employee' %}" class="add-employee-btn">Add Employee</a>
+    <table class="employee-table" id="employeeTable">
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Total Sick</th>
+                <th>Total Earned</th>
+                <th>Month</th>
+                <th>Quarter</th>
+                <th>Year</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in leave_report %}
+            <tr>
+                <td>{{ item.employee.id }}</td>
+                <td>{{ item.employee.first_name }} {{ item.employee.last_name }}</td>
+                <td>{{ item.employee.phone_number }}</td>
+                <td><span class="status {{ item.employee.status|lower }}">{{ item.employee.status }}</span></td>
+                <td>{{ item.total_sick }}</td>
+                <td>{{ item.total_earned }}</td>
+                <td>{{ item.leaves_this_month }}</td>
+                <td>{{ item.leaves_this_quarter }}</td>
+                <td>{{ item.leaves_this_year }}</td>
+                <td>
+                    <a href="{% url 'modify_employee' item.employee.id %}" class="action-btn edit"><i class="fas fa-edit"></i> Edit</a>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .table-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+    .table-container h2 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+    .add-employee-btn {
+        background-color: #4CAF50;
+        color: #fff;
+        padding: 10px 15px;
+        margin-bottom: 20px;
+        display: inline-block;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+    .add-employee-btn:hover {
+        background-color: #45a049;
+    }
+    .employee-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .employee-table th, .employee-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    .employee-table th {
+        background-color: #4CAF50;
+        color: #fff;
+    }
+    .employee-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    .employee-table tr:hover {
+        background-color: #f1f1f1;
+    }
+    .status.active {
+        color: #4CAF50;
+        font-weight: bold;
+    }
+    .status.inactive {
+        color: #f44336;
+        font-weight: bold;
+    }
+    .action-btn {
+        padding: 5px 10px;
+        margin-right: 5px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #fff;
+        transition: background 0.3s ease;
+    }
+    .edit {
+        background-color: #2196F3;
+    }
+    .toggle {
+        background-color: #FF9800;
+    }
+    .password {
+        background-color: #9C27B0;
+    }
+    .action-btn:hover {
+        opacity: 0.8;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const rows = document.querySelectorAll('#employeeTable tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('click', function() {
+                this.style.backgroundColor = '#e0f7fa';
+                setTimeout(() => {
+                    this.style.backgroundColor = '';
+                }, 300);
+            });
+        });
+    });
+</script>
