@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .leave-card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        .leave-type {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .leave-count {
+            font-size: 28px;
+            color: #007bff;
+        }
+        .apply-btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Welcome, {{ employee.first_name }} {{ employee.last_name }}</h2>
+
+        <div class="row text-center">
+            <div class="col-md-4 leave-card">
+                <span class="leave-type">CS Leaves:</span>
+                <div class="leave-count">{{ leave_balance.sick }}</div>
+            </div>
+            <div class="col-md-4 leave-card">
+                <span class="leave-type">E Leaves:</span>
+                <div class="leave-count">{{ leave_balance.earned }}</div>
+            </div>
+            <div class="col-md-4 leave-card">
+                <span class="leave-type">Leaves This Month:</span>
+                <div class="leave-count">{{ leave_balance.month }}</div>
+            </div>
+            <div class="col-md-4 leave-card">
+                <span class="leave-type">This Quarter:</span>
+                <div class="leave-count">{{ leave_balance.quarter }}</div>
+            </div>
+            <div class="col-md-4 leave-card">
+                <span class="leave-type">This Year:</span>
+                <div class="leave-count">{{ leave_balance.year }}</div>
+            </div>
+        </div>
+
+        <div class="text-center apply-btn">
+            <a href="{% url 'apply_leave' %}" class="btn btn-primary">Apply for Leave</a>
+            <a href="{% url 'logout' %}" class="btn btn-danger ms-2">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
