@@ -10,7 +10,6 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
 from django.utils.timezone import now
 from django.utils import timezone
-from django.contrib.auth import logout
 
 
 @login_required
@@ -142,7 +141,6 @@ def employee_dashboard(request):
     })
 
 
-
 @login_required
 def apply_leave(request):
     phone_number = request.session.get('employee_phone')
@@ -154,14 +152,8 @@ def apply_leave(request):
             leave = form.save(commit=False)
             leave.employee = employee
             leave.save()
-            messages.success(request, "Leave applied successfully.")
             return redirect('employee_dashboard')
     else:
         form = LeaveApplicationForm()
 
     return render(request, 'apply_leave.html', {'form': form})
-
-
-def employee_logout(request):
-    logout(request)
-    return redirect('employee_login')  # Redirect to login after logout
