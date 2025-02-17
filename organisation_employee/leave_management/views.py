@@ -23,7 +23,7 @@ def admin_dashboard(request):
     employees = EmployeeProfile.objects.all().annotate(
         total_sick=Count('employeeleave', filter=Q(employeeleave__leave_type='CS')),
         total_earned=Count('employeeleave', filter=Q(employeeleave__leave_type='E'))
-    )
+    ).order_by('id')
 
     leave_report = []
     for employee in employees:
@@ -154,6 +154,12 @@ def apply_leave(request):
             leave = form.save(commit=False)
             leave.employee = employee
             leave.save()
+            leave_days = (leave.end_date - leave.start_date).days
+            if leave.leave_type == 'CS':
+                employee.total_cs_leaves = employee.total_cs_leaves - leave_days
+            else:
+                employee.total_cs_leaves = employee.total_e_leaves - leave_days
+            employee.save()
             return redirect('employee_dashboard')
     else:
         form = LeaveApplicationForm()
