@@ -88,6 +88,7 @@ def modify_employee(request, employee_id=None):
 
 @login_required()
 def employee_login(request):
+    error = None
     if request.method == "POST":
         phone_number = request.POST.get('phone_number')
         password = request.POST.get('password')
@@ -100,10 +101,11 @@ def employee_login(request):
                 request.session['employee_phone'] = employee.phone_number  # Store phone number
                 return redirect('employee_dashboard')
             else:
-                messages.error(request, 'Invalid password.')
+                error = 'Invalid password.'
         except EmployeeProfile.DoesNotExist:
-            messages.error(request, 'Employee not found.')
-    return render(request, 'login.html')
+            error = 'Employee not found.'
+
+    return render(request, 'login.html', {'error': error})
 
 
 # Employee Dashboard to show leave balance and leave applied
