@@ -1,3 +1,4 @@
+
 # Employee Leave Management System
 
 This Django application allows an admin to manage employee data and view leave reports, while enabling employees to track and apply for leave. Below is a description of the key functionalities:
@@ -42,3 +43,15 @@ This Django application allows an admin to manage employee data and view leave r
 ## Notes:
 - All views are protected by the `@login_required` decorator to ensure that only logged-in users can access them.
 - The application uses Django's ORM to query employee leave data and calculate leave balances.
+
+## Screenshots
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/01e529b5-bd14-40d3-bc35-ce042814c132" width="500" height="250" /><br>
+  <img src="https://github.com/user-attachments/assets/e8d30cf8-1b18-4a3d-83a6-d068424ceba9" width="500" height="250" /><br>
+  <img src="https://github.com/user-attachments/assets/00b265a7-1124-4874-8a78-4ec991063538" width="500" height="250" /><br>
+  <img src="https://github.com/user-attachments/assets/1cfbca42-1d2a-4304-8263-26fb99ec3f60" width="500" height="250" /><br>
+  <img src="https://github.com/user-attachments/assets/4ef238f5-5858-433a-9e13-ff8dfa36cd1c" width="500" height="250" /><br>
+</p>
+
+
