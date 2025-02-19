@@ -16,34 +16,31 @@ from django.utils import timezone
 def admin_dashboard(request):
     today = now().date()
     first_day_of_month = today.replace(day=1)
+    # Consider three months of quarter
     current_quarter = (today.month - 1) // 3 + 1
     first_day_of_quarter = datetime(today.year, 3 * current_quarter - 2, 1).date()
+    # Consider financial year start from 1 Apr
     financial_year_start = datetime(today.year if today.month >= 4 else today.year - 1, 4, 1).date()
 
-    employees = EmployeeProfile.objects.all().annotate(
+    employee_queryset = EmployeeProfile.objects.all()
+    employees = employee_queryset.annotate(
         total_sick=Count('employeeleave', filter=Q(employeeleave__leave_type='CS')),
-        total_earned=Count('employeeleave', filter=Q(employeeleave__leave_type='E'))
+        total_earned=Count('employeeleave', filter=Q(employeeleave__leave_type='E')),
+        leaves_this_month=Count('employeeleave',
+                                filter=Q(employeeleave__start_date__range=(first_day_of_month, today))),
+        leaves_this_quarter=Count('employeeleave',
+                                  filter=Q(employeeleave__start_date__range=(first_day_of_quarter, today))),
+        leaves_this_year=Count('employeeleave',
+                               filter=Q(employeeleave__start_date__range=(financial_year_start, today)))
     ).order_by('id')
 
     leave_report = []
     for employee in employees:
-        leaves_this_month = EmployeeLeave.objects.filter(
-            employee=employee, start_date__range=(first_day_of_month, today)
-        ).count()
-
-        leaves_this_quarter = EmployeeLeave.objects.filter(
-            employee=employee, start_date__range=(first_day_of_quarter, today)
-        ).count()
-
-        leaves_this_year = EmployeeLeave.objects.filter(
-            employee=employee, start_date__range=(financial_year_start, today)
-        ).count()
-
         leave_report.append({
             'employee': employee,
-            'leaves_this_month': leaves_this_month,
-            'leaves_this_quarter': leaves_this_quarter,
-            'leaves_this_year': leaves_this_year,
+            'leaves_this_month': employee.leaves_this_month,
+            'leaves_this_quarter': employee.leaves_this_quarter,
+            'leaves_this_year': employee.leaves_this_year,
             'total_sick': employee.total_sick,
             'total_earned': employee.total_earned,
         })
@@ -51,9 +48,9 @@ def admin_dashboard(request):
     context = {
         'leave_report': leave_report,
         'employees': employees,
-        'total_employees': employees.count(),
-        'total_active_employees': employees.filter(status='Active').count(),
-        'total_inactive_employees': employees.filter(status='Inactive').count(),
+        'total_employees': employee_queryset.count(),
+        'total_active_employees': employee_queryset.filter(status='Active').count(),
+        'total_inactive_employees': employee_queryset.filter(status='Inactive').count(),
     }
 
     return render(request, 'admin_dashboard.html', context)
@@ -123,7 +120,7 @@ def employee_dashboard(request):
     current_month = current_date.month
     current_quarter = (current_date.month - 1) // 3 + 1
     current_year = current_date.year
-
+    print(current_month, current_quarter, current_year)
     leaves_this_month = EmployeeLeave.objects.filter(employee=employee, start_date__month=current_month)
     leaves_this_quarter = EmployeeLeave.objects.filter(employee=employee, start_date__quarter=current_quarter)
     leaves_this_year = EmployeeLeave.objects.filter(employee=employee, start_date__year=current_year)
