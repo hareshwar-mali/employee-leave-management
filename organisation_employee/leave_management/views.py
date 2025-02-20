@@ -13,6 +13,10 @@ from django.utils.timezone import now
 from django.utils import timezone
 
 
+def home(request):
+    return render(request, 'index.html')
+
+
 @login_required
 def admin_dashboard(request):
     today = now().date()
