@@ -70,7 +70,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'organisation_employee.wsgi.application'
-
+SESSION_COOKIE_AGE = 3600  # Session expires in 1 hour
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
