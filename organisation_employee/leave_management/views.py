@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import check_password
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.db.models import Count, Q
@@ -120,7 +121,6 @@ def employee_dashboard(request):
     current_month = current_date.month
     current_quarter = (current_date.month - 1) // 3 + 1
     current_year = current_date.year
-    print(current_month, current_quarter, current_year)
     leaves_this_month = EmployeeLeave.objects.filter(employee=employee, start_date__month=current_month)
     leaves_this_quarter = EmployeeLeave.objects.filter(employee=employee, start_date__quarter=current_quarter)
     leaves_this_year = EmployeeLeave.objects.filter(employee=employee, start_date__year=current_year)
