@@ -1,15 +1,19 @@
 from django.contrib import admin
-
 from .models import EmployeeProfile, EmployeeLeave
 
 
+@admin.register(EmployeeProfile)
 class EmployeeProfileAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in EmployeeProfile._meta.fields]
+    list_display = (
+        'id', 'user', 'first_name', 'last_name', 'phone_number', 'status', 'total_cs_leaves', 'total_e_leaves')
+    search_fields = ('first_name', 'last_name', 'phone_number', 'user__username')
+    list_filter = ('status',)
+    ordering = ('first_name', 'last_name')
 
 
+@admin.register(EmployeeLeave)
 class EmployeeLeaveAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in EmployeeLeave._meta.fields]
-
-
-admin.site.register(EmployeeProfile, EmployeeProfileAdmin)
-admin.site.register(EmployeeLeave, EmployeeLeaveAdmin)
+    list_display = ('id', 'employee', 'leave_type', 'start_date', 'end_date', 'status')
+    list_filter = ('leave_type', 'status')
+    search_fields = ('employee__first_name', 'employee__last_name', 'employee__phone_number')
+    ordering = ('start_date',)
