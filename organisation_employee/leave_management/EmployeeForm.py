@@ -17,8 +17,4 @@ class EmployeeForm(forms.ModelForm):
         if not re.match(pattern, phone_number):
             raise ValidationError("Phone number must be exactly 10 digits and start with 7, 8, or 9.")
 
-        # Check if the phone number already exists in the database
-        if EmployeeProfile.objects.filter(phone_number=phone_number).exists():
-            raise ValidationError("An employee with this phone number already exists.")
-
         return phone_number

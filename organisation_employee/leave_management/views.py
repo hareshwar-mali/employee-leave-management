@@ -185,7 +185,7 @@ def apply_leave(request):
             if leave.leave_type == 'CS':
                 employee.total_cs_leaves = employee.total_cs_leaves - leave_days
             else:
-                employee.total_cs_leaves = employee.total_e_leaves - leave_days
+                employee.total_e_leaves = employee.total_e_leaves - leave_days
             employee.save()
             return redirect('employee_dashboard')
     else:
