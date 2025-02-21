@@ -38,6 +38,22 @@
     </table>
 </div>
 
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+<!-- jQuery (required for DataTables) -->
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables JS -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+<!-- Initialize DataTables -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#employeeTable').DataTable();
+    });
+</script>
+
 <style>
     .table-container {
         background-color: #fff;
@@ -63,7 +79,6 @@
     .add-employee-btn:hover {
         background-color: #45a049;
     }
-    /* Specific styling for Logout button */
     .logout-btn {
         background-color: #f44336; /* Red color */
         color: #fff;
@@ -75,7 +90,7 @@
         transition: background 0.3s ease;
     }
     .logout-btn:hover {
-        background-color: #e53935; /* Darker red on hover */
+        background-color: #e53935;
     }
     .employee-table {
         width: 100%;
@@ -125,17 +140,3 @@
         opacity: 0.8;
     }
 </style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const rows = document.querySelectorAll('#employeeTable tbody tr');
-        rows.forEach(row => {
-            row.addEventListener('click', function() {
-                this.style.backgroundColor = '#e0f7fa';
-                setTimeout(() => {
-                    this.style.backgroundColor = '';
-                }, 300);
-            });
-        });
-    });
-</script>
