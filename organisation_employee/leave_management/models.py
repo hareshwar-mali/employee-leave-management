@@ -43,7 +43,7 @@ class EmployeeLeave(models.Model):
     leave_type = models.CharField(max_length=2, choices=LEAVE_TYPE_CHOICES)
     start_date = models.DateField()
     end_date = models.DateField()
-    status = models.CharField(max_length=15, default='Pending')  # e.g. Pending, Approved, Rejected
+    status = models.CharField(max_length=15, default='Pending')
 
     def __str__(self):
         return f"{self.employee.first_name} {self.leave_type} Leave from {self.start_date} to {self.end_date}"

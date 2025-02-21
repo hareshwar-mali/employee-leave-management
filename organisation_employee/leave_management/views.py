@@ -1,4 +1,3 @@
-from venv import create
 
 from django.contrib.auth.hashers import check_password
 from django.shortcuts import render, redirect, get_object_or_404
@@ -123,21 +122,20 @@ def admin_login(request):
             if not employee.user.is_staff:
                 error = 'You do not have permission to perform this action.'
                 return render(request, 'admin_login.html', {'error': error})
+
             # If user is admin, verify password
-            elif check_password(password, employee.password):  # Use check_password to verify hashed passwords
+            if password == employee.password:
                 request.session['employee_id'] = employee.id
                 request.session['employee_name'] = f"{employee.first_name} {employee.last_name}"
                 request.session['employee_phone'] = employee.phone_number  # Store phone number
-                # Optionally, you can log the user in (if using Django's authentication system)
-                login(request, employee.user)  # This logs in the user via Django's auth system
-                return redirect('admin_dashboard')
+                login(request, employee.user)  # Log in the user using Django's auth system
+                return redirect('admin_dashboard')  # Redirect to admin dashboard
             else:
                 error = 'Invalid password.'
         except EmployeeProfile.DoesNotExist:
             error = 'Employee not found.'
 
     return render(request, 'admin_login.html', {'error': error})
-
 
 @login_required
 def employee_dashboard(request):
