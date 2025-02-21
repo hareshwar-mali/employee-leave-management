@@ -1,7 +1,7 @@
 from rest_framework import routers
 from django.urls import path, include, re_path
 
-from .views import admin_dashboard, modify_employee, employee_login, employee_dashboard, apply_leave,home
+from .views import admin_dashboard, modify_employee, employee_login, employee_dashboard, apply_leave, home, admin_login
 
 router = routers.DefaultRouter()
 
@@ -12,6 +12,7 @@ urlpatterns = [
     path("employee/add/", modify_employee, name="modify_employee"),
     path("employee/edit/<int:employee_id>/", modify_employee, name="modify_employee"),
     path("employee_login/", employee_login, name="employee_login"),
+    path("admin_login/", admin_login, name="admin_login"),
     path('employee_dashboard/', employee_dashboard, name='employee_dashboard'),
     path('apply_leave/', apply_leave, name='apply_leave'),
 ]
