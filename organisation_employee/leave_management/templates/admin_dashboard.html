@@ -4,36 +4,37 @@
     <a href="{% url 'home' %}" class="logout-btn">Logout</a>
     <table class="employee-table" id="employeeTable">
         <thead>
-            <tr>
-                <th>Employee ID</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Status</th>
-                <th>Total Sick</th>
-                <th>Total Earned</th>
-                <th>Month</th>
-                <th>Quarter</th>
-                <th>Year</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Total Sick</th>
+            <th>Total Earned</th>
+            <th>Month</th>
+            <th>Quarter</th>
+            <th>Year</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
-            {% for item in leave_report %}
-            <tr>
-                <td>{{ item.employee.id }}</td>
-                <td>{{ item.employee.first_name }} {{ item.employee.last_name }}</td>
-                <td>{{ item.employee.phone_number }}</td>
-                <td><span class="status {{ item.employee.status|lower }}">{{ item.employee.status }}</span></td>
-                <td>{{ item.total_sick }}</td>
-                <td>{{ item.total_earned }}</td>
-                <td>{{ item.leaves_this_month }}</td>
-                <td>{{ item.leaves_this_quarter }}</td>
-                <td>{{ item.leaves_this_year }}</td>
-                <td>
-                    <a href="{% url 'modify_employee' item.employee.id %}" class="action-btn edit"><i class="fas fa-edit"></i> Edit</a>
-                </td>
-            </tr>
-            {% endfor %}
+        {% for item in leave_report %}
+        <tr>
+            <td>{{ item.employee.id }}</td>
+            <td>{{ item.employee.first_name }} {{ item.employee.last_name }}</td>
+            <td>{{ item.employee.phone_number }}</td>
+            <td><span class="status {{ item.employee.status|lower }}">{{ item.employee.status }}</span></td>
+            <td>{{ item.total_sick }}</td>
+            <td>{{ item.total_earned }}</td>
+            <td>{{ item.leaves_this_month }}</td>
+            <td>{{ item.leaves_this_quarter }}</td>
+            <td>{{ item.leaves_this_year }}</td>
+            <td>
+                <a href="{% url 'modify_employee' item.employee.id %}" class="action-btn edit"><i
+                        class="fas fa-edit"></i> Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
         </tbody>
     </table>
 </div>
@@ -45,12 +46,18 @@
 <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- DataTables JS -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
 
 <!-- Initialize DataTables -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        $('#employeeTable').DataTable();
+        $('#employeeTable').DataTable({
+            // Set the default number of entries per page
+            "pageLength": 5,  // Set default entries per page
+            "lengthMenu": [ [2, 5, 100], [2, 5, 100] ],  // Options for page length
+        });
     });
 </script>
 
