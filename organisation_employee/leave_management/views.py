@@ -1,5 +1,3 @@
-
-from django.contrib.auth.hashers import check_password
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.db.models import Count, Q
@@ -15,6 +13,35 @@ from django.utils import timezone
 
 def home(request):
     return render(request, 'index.html')
+
+
+def admin_login(request):
+    error = None
+    if request.method == "POST":
+        phone_number = request.POST.get('phone_number')
+        password = request.POST.get('password')
+        try:
+            # Get the employee based on the phone number
+            employee = EmployeeProfile.objects.get(phone_number=phone_number)
+
+            # Ensure the employee is an admin
+            if not employee.user.is_staff:
+                error = 'You do not have permission to perform this action.'
+                return render(request, 'admin_login.html', {'error': error})
+
+            # If user is admin, verify password
+            if password == employee.password:
+                request.session['employee_id'] = employee.id
+                request.session['employee_name'] = f"{employee.first_name} {employee.last_name}"
+                request.session['employee_phone'] = employee.phone_number  # Store phone number
+                login(request, employee.user)  # Log in the user using Django's auth system
+                return redirect('admin_dashboard')  # Redirect to admin dashboard
+            else:
+                error = 'Invalid password.'
+        except EmployeeProfile.DoesNotExist:
+            error = 'Employee not found.'
+
+    return render(request, 'admin_login.html', {'error': error})
 
 
 @login_required
@@ -108,34 +135,6 @@ def employee_login(request):
 
     return render(request, 'login.html', {'error': error})
 
-
-def admin_login(request):
-    error = None
-    if request.method == "POST":
-        phone_number = request.POST.get('phone_number')
-        password = request.POST.get('password')
-        try:
-            # Get the employee based on the phone number
-            employee = EmployeeProfile.objects.get(phone_number=phone_number)
-
-            # Ensure the employee is an admin
-            if not employee.user.is_staff:
-                error = 'You do not have permission to perform this action.'
-                return render(request, 'admin_login.html', {'error': error})
-
-            # If user is admin, verify password
-            if password == employee.password:
-                request.session['employee_id'] = employee.id
-                request.session['employee_name'] = f"{employee.first_name} {employee.last_name}"
-                request.session['employee_phone'] = employee.phone_number  # Store phone number
-                login(request, employee.user)  # Log in the user using Django's auth system
-                return redirect('admin_dashboard')  # Redirect to admin dashboard
-            else:
-                error = 'Invalid password.'
-        except EmployeeProfile.DoesNotExist:
-            error = 'Employee not found.'
-
-    return render(request, 'admin_login.html', {'error': error})
 
 @login_required
 def employee_dashboard(request):
