@@ -1,6 +1,7 @@
 <div class="table-container">
     <h2>Employee Dashboard</h2>
     <a href="{% url 'modify_employee' %}" class="add-employee-btn">Add Employee</a>
+    <a href="{% url 'home' %}" class="logout-btn">Logout</a>
     <table class="employee-table" id="employeeTable">
         <thead>
             <tr>
@@ -30,7 +31,6 @@
                 <td>{{ item.leaves_this_year }}</td>
                 <td>
                     <a href="{% url 'modify_employee' item.employee.id %}" class="action-btn edit"><i class="fas fa-edit"></i> Edit</a>
-
                 </td>
             </tr>
             {% endfor %}
@@ -62,6 +62,20 @@
     }
     .add-employee-btn:hover {
         background-color: #45a049;
+    }
+    /* Specific styling for Logout button */
+    .logout-btn {
+        background-color: #f44336; /* Red color */
+        color: #fff;
+        padding: 10px 15px;
+        margin-bottom: 20px;
+        display: inline-block;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+    .logout-btn:hover {
+        background-color: #e53935; /* Darker red on hover */
     }
     .employee-table {
         width: 100%;
