@@ -88,6 +88,27 @@ def admin_dashboard(request):
     return render(request, 'admin_dashboard.html', context)
 
 
+def employee_login(request):
+    error = None
+    if request.method == "POST":
+        phone_number = request.POST.get('phone_number')
+        password = request.POST.get('password')
+
+        try:
+            employee = EmployeeProfile.objects.get(phone_number=phone_number)
+            if employee.password == password:
+                request.session['employee_id'] = employee.id
+                request.session['employee_name'] = f"{employee.first_name} {employee.last_name}"
+                request.session['employee_phone'] = employee.phone_number  # Store phone number
+                return redirect('employee_dashboard')
+            else:
+                error = 'Invalid password.'
+        except EmployeeProfile.DoesNotExist:
+            error = 'Employee not found.'
+
+    return render(request, 'login.html', {'error': error})
+
+
 @login_required
 def modify_employee(request, employee_id=None):
     if employee_id:
@@ -113,27 +134,6 @@ def modify_employee(request, employee_id=None):
         form = EmployeeForm(instance=employee)
 
     return render(request, "modify_employee.html", {"form": form})
-
-
-def employee_login(request):
-    error = None
-    if request.method == "POST":
-        phone_number = request.POST.get('phone_number')
-        password = request.POST.get('password')
-
-        try:
-            employee = EmployeeProfile.objects.get(phone_number=phone_number)
-            if employee.password == password:
-                request.session['employee_id'] = employee.id
-                request.session['employee_name'] = f"{employee.first_name} {employee.last_name}"
-                request.session['employee_phone'] = employee.phone_number  # Store phone number
-                return redirect('employee_dashboard')
-            else:
-                error = 'Invalid password.'
-        except EmployeeProfile.DoesNotExist:
-            error = 'Employee not found.'
-
-    return render(request, 'login.html', {'error': error})
 
 
 @login_required
