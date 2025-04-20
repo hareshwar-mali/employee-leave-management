@@ -1,12 +1,8 @@
-from rest_framework import routers
-from django.urls import path, include, re_path
-
+from django.urls import path
 from .views import admin_dashboard, modify_employee, employee_login, employee_dashboard, apply_leave, home, admin_login
 
-router = routers.DefaultRouter()
-
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', home, name='home'),  # ⬅️ root URL will render your HTML homepage now
     path("home/", home, name="home"),
     path("admin_dashboard/", admin_dashboard, name="admin_dashboard"),
     path("employee/add/", modify_employee, name="modify_employee"),
